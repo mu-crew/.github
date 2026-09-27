@@ -7,7 +7,10 @@ agents in [tmux](https://github.com/tmux/tmux), on one machine or several.
 | --- | --- | --- |
 | [mu](https://github.com/mu-stack/mu) | Coordinate a crew of agents: task DAG, per-agent VCS workspaces, audit log | `npm i -g @mu-stack/mu` |
 | [murmur](https://github.com/mu-stack/murmur) | See every agent on every machine, and jump to the one that needs you | `npm i -g @mu-stack/murmur` |
-| [mule](https://github.com/mu-stack/mule) | Run long remote jobs without holding an SSH session | `cargo install mule-cli` |
+| [mule](https://github.com/mu-stack/mule) | Run long remote jobs without holding an SSH session | `npm i -g @mu-stack/mule` |
+
+mule is a Rust binary; the npm package ships it prebuilt for Linux (x64,
+arm64) and macOS (arm64). `cargo install mule-cli` also works.
 
 Each tool works alone. Start with mu for parallel agents on one machine. Add
 murmur when agents run on more than one machine. Use mule when a remote host
