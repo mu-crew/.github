@@ -18,9 +18,6 @@ together they compose.
 | [murmur](https://github.com/mu-crew/murmur) | See every agent on every machine, and jump to the one that needs you | `npm i -g @mu-crew/murmur` |
 | [mule](https://github.com/mu-crew/mule) | Run long remote jobs without holding an SSH session | `npm i -g @mu-crew/mule` |
 
-mule is a Rust binary; the npm package ships it prebuilt for Linux (x64,
-arm64) and macOS (arm64). `cargo install mule-cli` also works.
-
 Each tool works alone. Start with mu for parallel agents on one machine. Add
 murmur when agents run on more than one machine. Use mule when a remote host
 caps SSH sessions (`MaxSessions 1`) or a command must survive a dropped
