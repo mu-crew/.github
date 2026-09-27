@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>mu-crew</title>
+  <!-- A tmux window: one big pane holding μ, two agent panes, a status bar.
+       Catppuccin Mocha: base #1e1e2e, surface #313244, mauve #cba6f7,
+       green #a6e3a1, peach #fab387, blue #89b4fa. -->
+  <rect x="16" y="16" width="480" height="480" rx="72" fill="#1e1e2e"/>
+
+  <!-- pane borders -->
+  <g stroke="#45475a" stroke-width="8" stroke-linecap="round" fill="none">
+    <line x1="320" y1="64" x2="320" y2="400"/>
+    <line x1="320" y1="232" x2="448" y2="232"/>
+  </g>
+
+  <!-- μ -->
+  <g stroke="#cba6f7" stroke-width="40" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M104 128 V380"/>
+    <path d="M104 128 V252 Q104 316 164 316 Q224 316 224 252 V128"/>
+    <path d="M224 252 V286 Q224 316 256 316"/>
+  </g>
+
+  <!-- agent panes: one running, one waiting on you -->
+  <circle cx="360" cy="116" r="16" fill="#a6e3a1"/>
+  <rect x="352" y="152" width="72" height="12" rx="6" fill="#585b70"/>
+  <rect x="352" y="176" width="48" height="12" rx="6" fill="#585b70"/>
+  <circle cx="360" cy="284" r="16" fill="#fab387"/>
+  <rect x="352" y="320" width="72" height="12" rx="6" fill="#585b70"/>
+  <rect x="352" y="344" width="56" height="12" rx="6" fill="#585b70"/>
+
+  <!-- status bar -->
+  <path d="M16 424 H496 V424 Q496 496 424 496 H88 Q16 496 16 424 Z" fill="#313244"/>
+  <circle cx="84" cy="460" r="10" fill="#a6e3a1"/>
+  <circle cx="116" cy="460" r="10" fill="#fab387"/>
+  <circle cx="148" cy="460" r="10" fill="#89b4fa"/>
+</svg>
