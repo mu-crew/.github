@@ -1,7 +1,13 @@
 # mu-stack
 
-Tools for running [pi](https://github.com/earendil-works/pi-coding-agent)
-agents in [tmux](https://github.com/tmux/tmux), on one machine or several.
+**Run a crew of [pi](https://github.com/earendil-works/pi-coding-agent) agents
+in [tmux](https://github.com/tmux/tmux). See which one needs you, on any
+machine. Keep long jobs off your SSH session.**
+
+mu plans the work and hands it out. murmur shows which agent, on which host, is
+waiting on you, and jumps you there. mule runs the long build on a remote host
+so it doesn't hold your SSH session. They are three small binaries with no
+daemon and no hosted service.
 
 | Tool | Job | Install |
 | --- | --- | --- |
