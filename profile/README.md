@@ -1,6 +1,6 @@
 # mu-crew
 
-**Run a crew of [pi](https://github.com/earendil-works/pi-coding-agent) agents
+**Run a crew of [pi](https://github.com/earendil-works/pi) agents
 in [tmux](https://github.com/tmux/tmux). See which one needs you, on any
 machine. Keep long jobs off your SSH session.**
 

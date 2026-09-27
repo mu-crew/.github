@@ -13,7 +13,7 @@ private tmux server. We build nothing tmux already does: panes, sessions,
 attach, detach.
 
 **pi is the agent.** mu drives
-[pi](https://github.com/earendil-works/pi-coding-agent), and murmur reports
+[pi](https://github.com/earendil-works/pi), and murmur reports
 from inside it as an extension (`murmur link pi`). We extend pi through
 extensions, skills and CLIs, and we never fork or vendor it. pi picks its own
 model, provider and effort; so does your shell rc through
