@@ -1,0 +1,5 @@
+# Working documents stay local, as in the sibling repos.
+docs/specs/
+
+# Editor and tool scratch files.
+.m-*
