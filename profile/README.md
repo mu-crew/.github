@@ -6,8 +6,11 @@ machine. Keep long jobs off your SSH session.**
 
 mu plans the work and hands it out. murmur shows which agent, on which host, is
 waiting on you, and jumps you there. mule runs the long build on a remote host
-so it doesn't hold your SSH session. They are three small binaries with no
-daemon and no hosted service.
+so it doesn't hold your SSH session.
+
+They stay out of the model's way: the tools coordinate, the model decides.
+There are no daemons and no complicated setup. Each tool stands alone, and
+together they compose.
 
 | Tool | Job | Install |
 | --- | --- | --- |
