@@ -23,6 +23,12 @@ murmur when agents run on more than one machine. Use mule when a remote host
 caps SSH sessions (`MaxSessions 1`) or a command must survive a dropped
 connection.
 
+[mu-crew/dotfiles](https://github.com/mu-crew/dotfiles) wires them into tmux:
+agent state in your tabs and pane borders, a status pill, and keys for the
+picker, side panel and dash. One `source-file` line; it leaves your theme and
+status line alone. For ssh it has the ControlMaster setup murmur and mule
+expect, and notify hooks for Codex and Cursor.
+
 ## How they fit
 
 The tools share no code and no database. They integrate through environment
@@ -33,6 +39,10 @@ variables:
   are blocked or crashed.
 - mule runs each job with `MU_AGENT_NAME=mule-<id>` and forwards the caller's
   `MU_WORKSTREAM`. A remote TUI job shows up in `murmur pick` as crew.
+- murmur publishes agent state as tmux options (`@murmur_*`). The dotfiles
+  formats read them, and so can anything else: the
+  [tsesh](https://github.com/martintrojer/tmux-session-picker) session picker
+  colours sessions from `@murmur_session_state`.
 
 ## Built on tmux and pi
 
@@ -53,3 +63,10 @@ The design rules are in [ZEN.md](https://github.com/mu-crew/.github/blob/main/ZE
 
 The tools are published as-is. Issues are welcome; open one before a pull
 request.
+
+## Built by agents, for agents
+
+AI coding agents wrote most of this code, running on this stack, with a human
+reviewing and deciding what ships. The tools are built for the same job: running
+AI agents. Their CLIs print next steps and use distinct exit codes so an agent
+can drive them too.
