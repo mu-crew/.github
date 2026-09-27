@@ -1,4 +1,4 @@
-# Zen of mu-stack
+# Zen of the mu stack
 
 Seven rules for designing and reviewing the tools. Cite them by number in a
 review: "this breaks #1".

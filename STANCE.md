@@ -1,6 +1,6 @@
 # Stance
 
-mu-stack is three tools for running coding agents: mu, murmur and mule. This
+The mu stack is three tools for running coding agents: mu, murmur and mule. This
 page says what they are built on, what they support beyond that, and what the
 org promises. [ZEN.md](ZEN.md) has the design rules.
 

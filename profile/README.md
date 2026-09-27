@@ -1,4 +1,4 @@
-# mu-stack
+# mu-crew
 
 **Run a crew of [pi](https://github.com/earendil-works/pi-coding-agent) agents
 in [tmux](https://github.com/tmux/tmux). See which one needs you, on any
@@ -14,9 +14,9 @@ together they compose.
 
 | Tool | Job | Install |
 | --- | --- | --- |
-| [mu](https://github.com/mu-stack/mu) | Coordinate a crew of agents: task DAG, per-agent VCS workspaces, audit log | `npm i -g @mu-stack/mu` |
-| [murmur](https://github.com/mu-stack/murmur) | See every agent on every machine, and jump to the one that needs you | `npm i -g @mu-stack/murmur` |
-| [mule](https://github.com/mu-stack/mule) | Run long remote jobs without holding an SSH session | `npm i -g @mu-stack/mule` |
+| [mu](https://github.com/mu-crew/mu) | Coordinate a crew of agents: task DAG, per-agent VCS workspaces, audit log | `npm i -g @mu-crew/mu` |
+| [murmur](https://github.com/mu-crew/murmur) | See every agent on every machine, and jump to the one that needs you | `npm i -g @mu-crew/murmur` |
+| [mule](https://github.com/mu-crew/mule) | Run long remote jobs without holding an SSH session | `npm i -g @mu-crew/mule` |
 
 mule is a Rust binary; the npm package ships it prebuilt for Linux (x64,
 arm64) and macOS (arm64). `cargo install mule-cli` also works.
@@ -45,14 +45,14 @@ build nothing tmux already does, and we extend pi without forking it.
 
 Support reaches further in places: mu also spawns into herdr panes, murmur
 takes attention hooks from Codex, Cursor and opencode, and mule runs any
-command. Each has a stated limit; see [STANCE.md](https://github.com/mu-stack/.github/blob/main/STANCE.md).
+command. Each has a stated limit; see [STANCE.md](https://github.com/mu-crew/.github/blob/main/STANCE.md).
 
 ## What none of them do
 
 No hosted service, no daemon, no agent-to-agent chat. None of them picks a
 model or provider. State is SQLite and files on each machine.
 
-The design rules are in [ZEN.md](https://github.com/mu-stack/.github/blob/main/ZEN.md).
+The design rules are in [ZEN.md](https://github.com/mu-crew/.github/blob/main/ZEN.md).
 
 The tools are published as-is. Issues are welcome; open one before a pull
 request.
