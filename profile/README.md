@@ -1,72 +1,58 @@
-# mu-crew
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mu-crew/.github/main/logo/mu-crew.png" alt="mu-crew logo: a tmux window with μ and two agent panes" width="128">
+</p>
 
-**Run a crew of [pi](https://github.com/earendil-works/pi) agents
-in [tmux](https://github.com/tmux/tmux). See which one needs you, on any
-machine. Keep long jobs off your SSH session.**
+<h1 align="center">mu-crew</h1>
 
-mu plans the work and hands it out. murmur shows which agent, on which host, is
-waiting on you, and jumps you there. mule runs the long build on a remote host
-so it doesn't hold your SSH session.
+<p align="center">
+Run a crew of <a href="https://github.com/earendil-works/pi">pi</a> agents in <a href="https://github.com/tmux/tmux">tmux</a>.<br>
+See which one needs you, on any machine.<br>
+Keep long jobs off your SSH session.
+</p>
 
-They stay out of the model's way: the tools coordinate, the model decides.
-There are no daemons and no complicated setup. Each tool stands alone, and
-together they compose.
+## The tools
 
-| Tool | Job | Install |
-| --- | --- | --- |
-| [mu](https://github.com/mu-crew/mu) | Coordinate a crew of agents: task DAG, per-agent VCS workspaces, audit log | `npm i -g @mu-crew/mu` |
-| [murmur](https://github.com/mu-crew/murmur) | See every agent on every machine, and jump to the one that needs you | `npm i -g @mu-crew/murmur` |
-| [mule](https://github.com/mu-crew/mule) | Run long remote jobs without holding an SSH session | `npm i -g @mu-crew/mule` |
+| Tool | What it does |
+| --- | --- |
+| [**mu**](https://github.com/mu-crew/mu) | Plans the work and hands it out: task DAG, per-agent workspaces, audit log |
+| [**murmur**](https://github.com/mu-crew/murmur) | Shows which agent, on which host, is waiting on you, and jumps you there |
+| [**mule**](https://github.com/mu-crew/mule) | Runs the long build on a remote host without holding your SSH session |
+| [**dotfiles**](https://github.com/mu-crew/dotfiles) | Wires them into tmux: agent state in tabs and borders, a status pill, keys |
+
+```sh
+npm i -g @mu-crew/mu @mu-crew/murmur @mu-crew/mule
+```
 
 Each tool works alone. Start with mu for parallel agents on one machine. Add
-murmur when agents run on more than one machine. Use mule when a remote host
-caps SSH sessions (`MaxSessions 1`) or a command must survive a dropped
-connection.
-
-[mu-crew/dotfiles](https://github.com/mu-crew/dotfiles) wires them into tmux:
-agent state in your tabs and pane borders, a status pill, and keys for the
-picker, side panel and dash. One `source-file` line; it leaves your theme and
-status line alone. For ssh it has the ControlMaster setup murmur and mule
-expect, and notify hooks for Codex and Cursor.
+murmur when agents run on more than one machine. Add mule when a remote host
+caps SSH sessions or a command must survive a dropped connection.
 
 ## How they fit
 
-The tools share no code and no database. They integrate through environment
-variables:
+The tools share no code and no database. They meet in environment variables
+and tmux options:
 
-- mu sets `MU_MANAGED_AGENT`, `MU_AGENT_NAME` and `MU_WORKSTREAM` in every
-  pane it spawns. murmur marks those agents as crew and hides them unless they
-  are blocked or crashed.
-- mule runs each job with `MU_AGENT_NAME=mule-<id>` and forwards the caller's
-  `MU_WORKSTREAM`. A remote TUI job shows up in `murmur pick` as crew.
-- murmur publishes agent state as tmux options (`@murmur_*`). The dotfiles
-  formats read them, and so can anything else: the
-  [tsesh](https://github.com/martintrojer/tmux-session-picker) session picker
-  colours sessions from `@murmur_session_state`.
+- mu sets `MU_AGENT_NAME` and `MU_WORKSTREAM` in every pane it spawns. murmur
+  marks those agents as crew and shows them only when they need you.
+- mule runs each job as `mule-<id>`, so a remote job shows up in murmur too.
+- murmur publishes agent state as `@murmur_*` tmux options. The dotfiles read
+  them, and so can anything else, like the
+  [tsesh](https://github.com/martintrojer/tmux-session-picker) session picker.
 
-## Built on tmux and pi
+## What we believe
 
-tmux is the runtime: a tmux server plus a pane id is an agent's address. pi is
-the agent: mu drives it and murmur reports from inside it as an extension. We
-build nothing tmux already does, and we extend pi without forking it.
+- **Stay out of the model's way.** The tools coordinate; the model decides.
+- **No daemons, no complicated setup.** State is SQLite and files on each machine.
+- **Standalone tools that compose.** Each is useful alone.
 
-Support reaches further in places: mu also spawns into herdr panes, murmur
-takes attention hooks from Codex, Cursor and opencode, and mule runs any
-command. Each has a stated limit; see [STANCE.md](https://github.com/mu-crew/.github/blob/main/STANCE.md).
-
-## What none of them do
-
-No hosted service, no daemon, no agent-to-agent chat. None of them picks a
-model or provider. State is SQLite and files on each machine.
-
-The design rules are in [ZEN.md](https://github.com/mu-crew/.github/blob/main/ZEN.md).
-
-The tools are published as-is. Issues are welcome; open one before a pull
-request.
+Built on tmux and pi, with narrower support for herdr, Codex, Cursor and
+opencode. The full stance is in [STANCE.md](https://github.com/mu-crew/.github/blob/main/STANCE.md)
+and the design rules in [ZEN.md](https://github.com/mu-crew/.github/blob/main/ZEN.md).
 
 ## Built by agents, for agents
 
 AI coding agents wrote most of this code, running on this stack, with a human
-reviewing and deciding what ships. The tools are built for the same job: running
-AI agents. Their CLIs print next steps and use distinct exit codes so an agent
-can drive them too.
+reviewing what ships. The CLIs print next steps and use distinct exit codes so
+an agent can drive them too.
+
+Published as-is. Issues are welcome; open one before a pull request.
