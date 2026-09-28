@@ -17,6 +17,7 @@ Keep long jobs off your SSH session.
 | [**mu**](https://github.com/mu-crew/mu) | Plans the work and hands it out: task DAG, per-agent workspaces, audit log |
 | [**murmur**](https://github.com/mu-crew/murmur) | Shows which agent, on which host, is waiting on you, and jumps you there |
 | [**mule**](https://github.com/mu-crew/mule) | Runs the long build on a remote host without holding your SSH session |
+| [**tsesh**](https://github.com/mu-crew/tmux-session-picker) | Picks or creates a tmux session, with each session's agent state |
 | [**dotfiles**](https://github.com/mu-crew/dotfiles) | Wires them into tmux: agent state in tabs and borders, a status pill, keys |
 
 ```sh
@@ -35,9 +36,8 @@ and tmux options:
 - mu sets `MU_AGENT_NAME` and `MU_WORKSTREAM` in every pane it spawns. murmur
   marks those agents as crew and shows them only when they need you.
 - mule runs each job as `mule-<id>`, so a remote job shows up in murmur too.
-- murmur publishes agent state as `@murmur_*` tmux options. The dotfiles read
-  them, and so can anything else, like the
-  [tsesh](https://github.com/martintrojer/tmux-session-picker) session picker.
+- murmur publishes agent state as `@murmur_*` tmux options. The dotfiles and
+  tsesh read them, and so can anything else.
 
 ## What we believe
 
