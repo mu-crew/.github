@@ -45,7 +45,8 @@ and tmux options:
   marks those agents as crew and shows them only when they need you.
 - mule runs each job as `mule-<id>`, so a remote job shows up in murmur too.
 - museum copies each machine's pi session files into its own folder in one
-  store, over plain rsync. Agents read the store with a skill.
+  store, over plain rsync, started by a pi extension as agents work. Agents
+  read the store with a skill.
 - murmur publishes agent state as `@murmur_*` tmux options. The dotfiles and
   tsesh read them, and so can anything else.
 
