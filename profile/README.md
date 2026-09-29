@@ -23,7 +23,10 @@ Keep every session they ever ran.
 | [**dotfiles**](https://github.com/mu-crew/dotfiles) | Wires them into tmux: agent state in tabs and borders, a status pill, keys |
 
 ```sh
-npm i -g @mu-crew/mu @mu-crew/murmur @mu-crew/mule
+npm i -g \
+  @mu-crew/mu \
+  @mu-crew/murmur \
+  @mu-crew/mule
 ```
 
 Each tool works alone. Start with mu for parallel agents on one machine. Add
