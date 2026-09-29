@@ -29,10 +29,12 @@ npm i -g \
   @mu-crew/mule
 ```
 
-Each tool works alone. Start with mu for parallel agents on one machine. Add
-murmur when agents run on more than one machine. Add mule when a remote host
-caps SSH sessions or a command must survive a dropped connection. Add museum
-when your sessions are worth keeping.
+Each tool works alone. Start with mu and murmur for parallel agents on one
+machine: on tmux, murmur is where mu gets each agent's state (working, waiting
+on you, done), even locally. Without it mu still plans, spawns and sends, but
+cannot tell a busy agent from a stalled one. murmur then covers every machine
+you peer. Add mule when a remote host caps SSH sessions or a command must
+survive a dropped connection. Add museum when your sessions are worth keeping.
 
 ## How they fit
 
