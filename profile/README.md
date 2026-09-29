@@ -7,7 +7,8 @@
 <p align="center">
 Run a crew of <a href="https://github.com/earendil-works/pi">pi</a> agents in <a href="https://github.com/tmux/tmux">tmux</a>.<br>
 See which one needs you, on any machine.<br>
-Keep long jobs off your SSH session.
+Keep long jobs off your SSH session.<br>
+Keep every session they ever ran.
 </p>
 
 ## The tools
@@ -17,6 +18,7 @@ Keep long jobs off your SSH session.
 | [**mu**](https://github.com/mu-crew/mu) | Plans the work and hands it out: task DAG, per-agent workspaces, audit log |
 | [**murmur**](https://github.com/mu-crew/murmur) | Shows which agent, on which host, is waiting on you, and jumps you there |
 | [**mule**](https://github.com/mu-crew/mule) | Runs the long build on a remote host without holding your SSH session |
+| [**museum**](https://github.com/mu-crew/museum) | Backs up every pi session from every machine to one store your agents can search |
 | [**tsesh**](https://github.com/mu-crew/tmux-session-picker) | Picks or creates a tmux session, with each session's agent state |
 | [**dotfiles**](https://github.com/mu-crew/dotfiles) | Wires them into tmux: agent state in tabs and borders, a status pill, keys |
 
@@ -26,7 +28,8 @@ npm i -g @mu-crew/mu @mu-crew/murmur @mu-crew/mule
 
 Each tool works alone. Start with mu for parallel agents on one machine. Add
 murmur when agents run on more than one machine. Add mule when a remote host
-caps SSH sessions or a command must survive a dropped connection.
+caps SSH sessions or a command must survive a dropped connection. Add museum
+when your sessions are worth keeping.
 
 ## How they fit
 
@@ -36,6 +39,8 @@ and tmux options:
 - mu sets `MU_AGENT_NAME` and `MU_WORKSTREAM` in every pane it spawns. murmur
   marks those agents as crew and shows them only when they need you.
 - mule runs each job as `mule-<id>`, so a remote job shows up in murmur too.
+- museum copies each machine's pi session files into its own folder in one
+  store, over plain rsync. Agents read the store with a skill.
 - murmur publishes agent state as `@murmur_*` tmux options. The dotfiles and
   tsesh read them, and so can anything else.
 
