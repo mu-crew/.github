@@ -27,13 +27,14 @@ npm i -g \
   @mu-crew/mu \
   @mu-crew/murmur \
   @mu-crew/mule
+mu link pi        # mu's pi extension and skill
+murmur link pi    # murmur's pi extension (state across machines, tmux badges)
 ```
 
-Each tool works alone. Start with mu and murmur for parallel agents on one
-machine: on tmux, murmur is where mu gets each agent's state (working, waiting
-on you, done), even locally. Without it mu still plans, spawns and sends, but
-cannot tell a busy agent from a stalled one. murmur then covers every machine
-you peer. Add mule when a remote host caps SSH sessions or a command must
+Each tool works alone. Start with mu: it knows exactly what each pi agent is
+doing (working, waiting on you, done), locally and on peered hosts over the
+agent's own SSH. Add murmur for the cross-machine "who needs me" view, tmux
+badges and jump, and state for CLIs other than pi. Add mule when a remote host caps SSH sessions or a command must
 survive a dropped connection. Add museum when your sessions are worth keeping.
 
 ## How they fit
@@ -43,6 +44,10 @@ and tmux options:
 
 - mu sets `MU_AGENT_NAME` and `MU_WORKSTREAM` in every pane it spawns. murmur
   marks those agents as crew and shows them only when they need you.
+- mu's pi extension serves a per-agent control socket at a path mu derives
+  from workstream and agent (`MU_CTL_SOCK`); murmur's extension publishes
+  `@murmur_*` tmux options. Both load in the same pi and do not depend on each
+  other.
 - mule runs each job as `mule-<id>`, so a remote job shows up in murmur too.
 - museum copies each machine's pi session files into its own folder in one
   store, over plain rsync, started by a pi extension as agents work. Agents
