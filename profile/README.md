@@ -34,8 +34,9 @@ murmur link pi    # murmur's pi extension (state across machines, tmux badges)
 Each tool works alone. Start with mu: it knows exactly what each pi agent is
 doing (working, waiting on you, done), locally and on peered hosts over the
 agent's own SSH. Add murmur for the cross-machine "who needs me" view, tmux
-badges and jump, and state for CLIs other than pi. Add mule when a remote host caps SSH sessions or a command must
-survive a dropped connection. Add museum when your sessions are worth keeping.
+badges and jump, and state for CLIs other than pi. Add mule when a remote host
+caps SSH sessions or a command must survive a dropped connection. Add museum
+when your sessions are worth keeping.
 
 ## How they fit
 
