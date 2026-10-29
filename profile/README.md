@@ -59,9 +59,9 @@ and tmux options:
 - museum copies each machine's pi session files into its own folder in one
   store, over plain rsync, started by a pi extension as agents work. Agents
   read the store with a skill.
-- muzzle reads `MU_MANAGED_AGENT` and `MU_AGENT_NAME`: commands from you and
-  other unmanaged callers go ahead of mu workers' commands, and each run is
-  logged under the agent's name.
+- muzzle needs nothing from mu, but uses what mu sets. A build you start in
+  your own shell goes ahead of builds queued by mu's workers, and
+  `muzzle status` shows which agent holds each slot.
 - murmur publishes agent state as `@murmur_*` tmux options. The dotfiles and
   tsesh read them, and so can anything else.
 
