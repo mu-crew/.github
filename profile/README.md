@@ -30,9 +30,10 @@ npm i -g \
   @mu-crew/murmur \
   @mu-crew/mule \
   @mu-crew/muzzle
-mu link pi        # mu's pi extension and skill
-murmur link pi    # murmur's pi extension (state across machines, tmux badges)
-pi install npm:@mu-crew/muzzle   # muzzle's pi extension: wraps heavy bash calls
+pi install npm:@mu-crew/mu       # mu's extension, skill and recipe prompts
+murmur init                      # this node's murmur identity
+pi install npm:@mu-crew/murmur   # murmur's extension (state across machines, tmux badges)
+pi install npm:@mu-crew/muzzle   # muzzle's extension and skill: wraps heavy bash calls
 ```
 
 Each tool works alone. Start with mu: it knows exactly what each pi agent is

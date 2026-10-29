@@ -14,7 +14,7 @@ attach, detach.
 
 **pi is the agent.** mu drives
 [pi](https://github.com/earendil-works/pi), and murmur reports
-from inside it as an extension (`murmur link pi`). We extend pi through
+from inside it as an extension (`pi install npm:@mu-crew/murmur`). We extend pi through
 extensions, skills and CLIs, and we never fork or vendor it. pi picks its own
 model, provider and effort; so does your shell rc through
 `$MU_<KEY>_COMMAND`.
