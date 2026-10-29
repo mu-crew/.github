@@ -1,6 +1,6 @@
 # Stance
 
-mu-crew is three tools for running coding agents: mu, murmur and mule. This
+mu-crew is tools for running coding agents: mu, murmur, mule and muzzle. This
 page says what they are built on, what they support beyond that, and what the
 org promises. [ZEN.md](ZEN.md) has the design rules.
 
@@ -32,6 +32,10 @@ limit we state instead of hiding.
 | Codex, Cursor, opencode | murmur records their attention requests through `murmur notify` hooks | Attention only: no ownership, no `running`/`idle`, no crash detection |
 | Any agent command | mu `--cli <key>` launches `$MU_<KEY>_COMMAND` | mu's skill and prompts are written for pi |
 | Any command | mule runs whatever you give it | TUI jobs need tmux on the remote host |
+| Claude Code, Codex | muzzle rewrites their Bash calls through a `PreToolUse` hook | The harness's own tool timeout still counts the wait; Claude gets `allow` only when a rule matches at the command word |
+| opencode, Cursor | muzzle: an example opencode plugin; Cursor can't rewrite a command | opencode's plugin is untested; on Cursor, wrap by hand |
+| Containers (distrobox, podman exec) | muzzle admits and queues container gates | Admission only: no memory cap or CPU figures inside the container |
+| macOS | muzzle runs there | Advisory: no memory cap or CPU weight (no systemd scope) |
 
 A new entry needs a named limit before it goes in this table.
 

@@ -8,6 +8,7 @@
 Run a crew of <a href="https://github.com/earendil-works/pi">pi</a> agents in <a href="https://github.com/tmux/tmux">tmux</a>.<br>
 See which one needs you, on any machine.<br>
 Keep long jobs off your SSH session.<br>
+Keep the crew's builds from eating the machine.<br>
 Keep every session they ever ran.
 </p>
 
@@ -18,6 +19,7 @@ Keep every session they ever ran.
 | [**mu**](https://github.com/mu-crew/mu) | Plans the work and hands it out: task DAG, per-agent workspaces, audit log |
 | [**murmur**](https://github.com/mu-crew/murmur) | Shows which agent, on which host, is waiting on you, and jumps you there |
 | [**mule**](https://github.com/mu-crew/mule) | Runs the long build on a remote host without holding your SSH session |
+| [**muzzle**](https://github.com/mu-crew/muzzle) | Queues heavy commands from all your agents on each machine, and sizes them from what they really used |
 | [**museum**](https://github.com/mu-crew/museum) | Backs up every pi session from every machine to one store your agents can search |
 | [**tsesh**](https://github.com/mu-crew/tmux-session-picker) | Picks or creates a tmux session, with each session's agent state |
 | [**dotfiles**](https://github.com/mu-crew/dotfiles) | Wires them into tmux: agent state in tabs and borders, a status pill, keys |
@@ -26,17 +28,20 @@ Keep every session they ever ran.
 npm i -g \
   @mu-crew/mu \
   @mu-crew/murmur \
-  @mu-crew/mule
+  @mu-crew/mule \
+  @mu-crew/muzzle
 mu link pi        # mu's pi extension and skill
 murmur link pi    # murmur's pi extension (state across machines, tmux badges)
+pi install npm:@mu-crew/muzzle   # muzzle's pi extension: wraps heavy bash calls
 ```
 
 Each tool works alone. Start with mu: it knows exactly what each pi agent is
 doing (working, waiting on you, done), locally and on peered hosts over the
 agent's own SSH. Add murmur for the cross-machine "who needs me" view, tmux
 badges and jump, and state for CLIs other than pi. Add mule when a remote host
-caps SSH sessions or a command must survive a dropped connection. Add museum
-when your sessions are worth keeping.
+caps SSH sessions or a command must survive a dropped connection. Add muzzle
+when several agents' builds and tests share one machine. Add museum when your
+sessions are worth keeping.
 
 ## How they fit
 
@@ -53,6 +58,9 @@ and tmux options:
 - museum copies each machine's pi session files into its own folder in one
   store, over plain rsync, started by a pi extension as agents work. Agents
   read the store with a skill.
+- muzzle reads `MU_MANAGED_AGENT` and `MU_AGENT_NAME`: commands from you and
+  other unmanaged callers go ahead of mu workers' commands, and each run is
+  logged under the agent's name.
 - murmur publishes agent state as `@murmur_*` tmux options. The dotfiles and
   tsesh read them, and so can anything else.
 
