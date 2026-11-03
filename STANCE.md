@@ -29,6 +29,7 @@ limit we state instead of hiding.
 | Beyond tmux and pi | Where | Limit |
 | --- | --- | --- |
 | herdr | mu spawns crews into herdr panes | murmur does not read herdr panes. herdr's own sidebar and `herdr machine` do that job. |
+| Rex | mu spawns crews into Rex sessions; non-pi agent state comes from the agent's own OSC 7501 report | Attach switches Rex.app and needs its Remote Control setting. murmur does not read Rex panes. A non-pi CLI that reports no OSC 7501 status reads `unknown`. |
 | Codex, Cursor, opencode | murmur records their attention requests through `murmur notify` hooks | Attention only: no ownership, no `running`/`idle`, no crash detection |
 | Any agent command | mu `--cli <key>` launches `$MU_<KEY>_COMMAND` | mu's skill and prompts are written for pi |
 | Any command | mule runs whatever you give it | TUI jobs need tmux on the remote host |
@@ -41,7 +42,7 @@ A new entry needs a named limit before it goes in this table.
 
 ## What we do not build
 
-- A terminal multiplexer or terminal runtime. tmux is ours; herdr is its own.
+- A terminal multiplexer or terminal runtime. tmux is ours; herdr and Rex are their own.
 - An agent, a model router or a fork of pi.
 - A hosted service or a daemon. State is SQLite and files on each machine.
 - Agent-to-agent chat. mu coordinates through a task graph and a log.

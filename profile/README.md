@@ -71,7 +71,7 @@ and tmux options:
 - **No daemons, no complicated setup.** State is SQLite and files on each machine.
 - **Standalone tools that compose.** Each is useful alone.
 
-Built on tmux and pi, with narrower support for herdr, Codex, Cursor and
+Built on tmux and pi, with narrower support for herdr, Rex, Codex, Cursor and
 opencode. The full stance is in [STANCE.md](https://github.com/mu-crew/.github/blob/main/STANCE.md)
 and the design rules in [ZEN.md](https://github.com/mu-crew/.github/blob/main/ZEN.md).
 
