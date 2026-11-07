@@ -20,7 +20,7 @@ Keep every session they ever ran.
 | [**murmur**](https://github.com/mu-crew/murmur) | Shows which agent, on which host, is waiting on you, and jumps you there |
 | [**mule**](https://github.com/mu-crew/mule) | Runs the long build on a remote host without holding your SSH session |
 | [**muzzle**](https://github.com/mu-crew/muzzle) | Queues heavy commands from all your agents on each machine, and sizes them from what they really used |
-| [**museum**](https://github.com/mu-crew/museum) | Backs up your agents' sessions (pi, Claude Code, Codex) from every machine to one store your agents can search |
+| [**museum**](https://github.com/mu-crew/museum) | Backs up your agents' sessions (pi, Claude Code, Codex, cursor-agent) from every machine to one store your agents can search |
 | [**tsesh**](https://github.com/mu-crew/tmux-session-picker) | Picks or creates a tmux session, with each session's agent state |
 | [**dotfiles**](https://github.com/mu-crew/dotfiles) | Wires them into tmux: agent state in tabs and borders, a status pill, keys |
 
@@ -66,9 +66,9 @@ and tmux options:
   the files into state. mu reads that state to confirm a send and to see a turn
   end, with its final text.
 - mule runs each job as `mule-<id>`, so a remote job shows up in murmur too.
-- museum copies each machine's pi, Claude Code and Codex session files into
-  its own folder in one store, over plain rsync, started by a pi extension, a
-  tmux status line or a timer. Agents read the store with a skill.
+- museum copies each machine's pi, Claude Code, Codex and cursor-agent session
+  files into its own folder in one store, over plain rsync, started by a pi
+  extension, a tmux status line or a timer. Agents read the store with a skill.
 - muzzle needs nothing from mu, but uses what mu sets. A build you start in
   your own shell goes ahead of builds queued by mu's workers, and
   `muzzle status` shows which agent holds each slot.

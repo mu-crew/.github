@@ -43,7 +43,7 @@ today, and each has a limit we state instead of hiding.
 | Claude Code | mu interrupts with Escape | Claude reports no interrupt: it reads `idle?` until its next event. |
 | Remote Claude Code, Codex, Cursor, Muse Code | mu reads the host's hook events on demand | A send is confirmed on the next read, not as it lands. |
 | Checks on the four | Their own subagents, recorded with `mu task check` and `mu task verdict` | `mu_delegate` children need pi. |
-| Cursor | murmur, mu, muzzle | No permission hook, so a waiting dialog reads as unknown. museum does not back up its chats: they are live SQLite databases. |
+| Cursor | murmur, mu, muzzle, museum | No permission hook, so a waiting dialog reads as unknown. museum backs up its agent-transcripts JSONL, not the live SQLite chats under `~/.cursor/chats/`. |
 | Muse Code | mu, murmur | Its Stop hook cannot hand the model a reason, so it keeps driving by mu's skill rule, not by mu's Stop hook. |
 | opencode | murmur records its attention requests through `murmur notify` | Attention only: no ownership, no `running`/`idle`, no crash detection |
 | Any agent command | mu `--cli <key>` launches `$MU_<KEY>_COMMAND` | Outside the five, mu cannot send to it on tmux, and its state is attention only |
