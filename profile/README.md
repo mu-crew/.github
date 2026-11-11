@@ -34,17 +34,18 @@ npm i -g \
 murmur init                      # this node's identity, and murmur's hook entries
 mu init                          # mu's Stop hook entry and skill per harness
 muzzle init                      # muzzle's hook entries: queues heavy shell calls
-museum init devbox:/data/museum  # museum's store, hook entries, skill, pi package, sync timer
+museum init devbox:/data/museum  # museum's store, hook entries, skill and sync timer
 pi install npm:@mu-crew/mu       # pi: mu's extension, skill and recipe prompts
 pi install npm:@mu-crew/murmur   # pi: murmur's extension (state across machines, tmux badges)
 pi install npm:@mu-crew/muzzle   # pi: muzzle's extension and skill
+pi install npm:@mu-crew/museum   # pi: museum's extension and skill
 ```
 
 Each `init` writes entries for every harness set up on the machine (Claude Code,
 Codex, Cursor, Muse Code) and touches only its own. The `pi install` lines are
-for pi; `museum init` installs museum's pi package itself. It takes the store
-(`host:/path`, or a local `/path`). Update everything with `npm update -g`,
-rerun the `init`s, and `pi update --extensions`.
+for pi. `museum init` takes the store (`host:/path`, or a local `/path`).
+Update everything with `npm update -g`, rerun the `init`s, and
+`pi update --extensions`.
 
 Each tool works alone. Start with mu: it plans the work and hands it to agents
 of any of the five, locally and on remote hosts. It drives pi exactly through a
