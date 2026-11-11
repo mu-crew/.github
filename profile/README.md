@@ -29,24 +29,22 @@ npm i -g \
   @mu-crew/mu \
   @mu-crew/murmur \
   @mu-crew/mule \
-  @mu-crew/muzzle
+  @mu-crew/muzzle \
+  @mu-crew/museum
 murmur init                      # this node's identity, and murmur's hook entries
 mu init                          # mu's Stop hook entry and skill per harness
 muzzle init                      # muzzle's hook entries: queues heavy shell calls
+museum init devbox:/data/museum  # museum's store, hook entries, skill, pi package, sync timer
 pi install npm:@mu-crew/mu       # pi: mu's extension, skill and recipe prompts
 pi install npm:@mu-crew/murmur   # pi: murmur's extension (state across machines, tmux badges)
 pi install npm:@mu-crew/muzzle   # pi: muzzle's extension and skill
-pi install npm:@mu-crew/museum   # pi: museum's extension and skill, then its setup:
-~/.pi/agent/npm/node_modules/@mu-crew/museum/install.sh devbox:/data/museum
 ```
 
 Each `init` writes entries for every harness set up on the machine (Claude Code,
 Codex, Cursor, Muse Code) and touches only its own. The `pi install` lines are
-for pi. museum's `install.sh` takes the store (`host:/path`, or a local
-`/path`), puts `museum` on `PATH`, links its skill into each harness and
-installs a sync timer; its
-[README](https://github.com/mu-crew/museum#install) has the harness hook
-entries. Update everything with `npm update -g` and `pi update --extensions`.
+for pi; `museum init` installs museum's pi package itself. It takes the store
+(`host:/path`, or a local `/path`). Update everything with `npm update -g`,
+rerun the `init`s, and `pi update --extensions`.
 
 Each tool works alone. Start with mu: it plans the work and hands it to agents
 of any of the five, locally and on remote hosts. It drives pi exactly through a
@@ -75,7 +73,7 @@ and tmux options:
 - museum copies each machine's pi, Claude Code, Codex and cursor-agent session
   files into its own folder in one store, over plain rsync, started by a pi
   extension, a tmux status line or a timer. Agents read the store with a skill,
-  and `museum fleet` shows which museum version each machine runs.
+  and `museum status` shows which museum version each machine runs.
 - muzzle needs nothing from mu, but uses what mu sets. A build you start in
   your own shell goes ahead of builds queued by mu's workers, and
   `muzzle status` shows which agent holds each slot.
