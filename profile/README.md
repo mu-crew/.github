@@ -5,7 +5,7 @@
 <h1 align="center">mu-crew</h1>
 
 <p align="center">
-Run a crew of coding agents in <a href="https://github.com/tmux/tmux">tmux</a>: Claude Code, Codex, Cursor, Muse Code and <a href="https://github.com/earendil-works/pi">pi</a>, mixed as you like.<br>
+Run a crew of coding agents in <a href="https://github.com/martintrojer/vtmux">tmux</a>: Claude Code, Codex, Cursor, Muse Code and <a href="https://github.com/earendil-works/pi">pi</a>, mixed as you like.<br>
 See which one needs you, on any machine.<br>
 Keep long jobs off your SSH session.<br>
 Keep the crew's builds from eating the machine.<br>
@@ -36,11 +36,17 @@ muzzle init                      # muzzle's hook entries: queues heavy shell cal
 pi install npm:@mu-crew/mu       # pi: mu's extension, skill and recipe prompts
 pi install npm:@mu-crew/murmur   # pi: murmur's extension (state across machines, tmux badges)
 pi install npm:@mu-crew/muzzle   # pi: muzzle's extension and skill
+pi install npm:@mu-crew/museum   # pi: museum's extension and skill, then its setup:
+~/.pi/agent/npm/node_modules/@mu-crew/museum/install.sh devbox:/data/museum
 ```
 
 Each `init` writes entries for every harness set up on the machine (Claude Code,
 Codex, Cursor, Muse Code) and touches only its own. The `pi install` lines are
-for pi.
+for pi. museum's `install.sh` takes the store (`host:/path`, or a local
+`/path`), puts `museum` on `PATH`, links its skill into each harness and
+installs a sync timer; its
+[README](https://github.com/mu-crew/museum#install) has the harness hook
+entries. Update everything with `npm update -g` and `pi update --extensions`.
 
 Each tool works alone. Start with mu: it plans the work and hands it to agents
 of any of the five, locally and on remote hosts. It drives pi exactly through a
@@ -68,7 +74,8 @@ and tmux options:
 - mule runs each job as `mule-<id>`, so a remote job shows up in murmur too.
 - museum copies each machine's pi, Claude Code, Codex and cursor-agent session
   files into its own folder in one store, over plain rsync, started by a pi
-  extension, a tmux status line or a timer. Agents read the store with a skill.
+  extension, a tmux status line or a timer. Agents read the store with a skill,
+  and `museum fleet` shows which museum version each machine runs.
 - muzzle needs nothing from mu, but uses what mu sets. A build you start in
   your own shell goes ahead of builds queued by mu's workers, and
   `muzzle status` shows which agent holds each slot.
