@@ -17,11 +17,11 @@ Keep every session they ever ran.
 | Tool | What it does |
 | --- | --- |
 | [**mu**](https://github.com/mu-crew/mu) | Plans the work and hands it out: task DAG, per-agent workspaces, audit log |
-| [**murmur**](https://github.com/mu-crew/murmur) | Shows which agent, on which host, is waiting on you, and jumps you there |
+| [**murmur**](https://github.com/mu-crew/murmur) | Shows which agent, on which host, is waiting on you; `murmur jump` or tsesh takes you there |
 | [**mule**](https://github.com/mu-crew/mule) | Runs the long build on a remote host without holding your SSH session |
 | [**muzzle**](https://github.com/mu-crew/muzzle) | Queues heavy commands from all your agents on each machine, and sizes them from what they really used |
 | [**museum**](https://github.com/mu-crew/museum) | Backs up your agents' sessions (pi, Claude Code, Codex, cursor-agent) from every machine to one store your agents can search |
-| [**tsesh**](https://github.com/mu-crew/tmux-session-picker) | Picks or creates a tmux session, with each session's agent state |
+| [**tsesh**](https://github.com/mu-crew/tmux-session-picker) | One picker for tmux sessions and the agents in them, on every host |
 | [**dotfiles**](https://github.com/mu-crew/dotfiles) | Wires them into tmux: agent state in tabs and borders, a status pill, keys |
 
 ```sh
@@ -41,6 +41,13 @@ pi install npm:@mu-crew/muzzle   # pi: muzzle's extension and skill
 pi install npm:@mu-crew/museum   # pi: museum's extension and skill
 ```
 
+tsesh is a tmux plugin. With [TPM](https://github.com/tmux-plugins/tpm), add to
+`~/.tmux.conf`:
+
+```tmux
+set -g @plugin 'mu-crew/tmux-session-picker'
+```
+
 Each `init` writes entries for every harness set up on the machine (Claude Code,
 Codex, Cursor, Muse Code) and touches only its own. The `pi install` lines are
 for pi. `museum init` takes the store (`host:/path`, or a local `/path`).
@@ -53,7 +60,8 @@ control socket, and the other four by paste, confirmed by their own hook events
 through murmur. Add murmur for the cross-machine "who needs me" view, tmux
 badges and jump. Add mule when a remote host caps SSH sessions or a command
 must survive a dropped connection. Add muzzle when several agents' builds and
-tests share one machine. Add museum when your sessions are worth keeping.
+tests share one machine. Add museum when your sessions are worth keeping. Add
+tsesh for one popup that switches sessions and, with murmur, jumps to agents.
 
 ## How they fit
 
@@ -78,8 +86,11 @@ and tmux options:
 - muzzle needs nothing from mu, but uses what mu sets. A build you start in
   your own shell goes ahead of builds queued by mu's workers, and
   `muzzle status` shows which agent holds each slot.
-- murmur publishes agent state as `@murmur_*` tmux options. The dotfiles and
-  tsesh read them, and so can anything else.
+- murmur publishes agent state as `@murmur_*` tmux options. The dotfiles read
+  them, and so can anything else.
+- tsesh reads `murmur status --json --cached` (its stable fields) and hands a
+  jump to `murmur jump <jump_target>`. Without murmur it falls back to the
+  `@murmur_*` tmux options.
 
 ## What we believe
 
