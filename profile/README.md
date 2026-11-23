@@ -35,6 +35,7 @@ murmur init                      # this node's identity, and murmur's hook entri
 mu init                          # mu's Stop hook entry and skill per harness
 muzzle init                      # muzzle's hook entries: queues heavy shell calls
 museum init devbox:/data/museum  # museum's store, hook entries, skill and sync timer
+mule init                        # registers mule's plugin with mu
 pi install npm:@mu-crew/mu       # pi: mu's extension, skill and recipe prompts
 pi install npm:@mu-crew/murmur   # pi: murmur's extension (state across machines, tmux badges)
 pi install npm:@mu-crew/muzzle   # pi: muzzle's extension and skill
@@ -65,8 +66,8 @@ tsesh for one popup that switches sessions and, with murmur, jumps to agents.
 
 ## How they fit
 
-The tools share no code and no database. They meet in environment variables
-and tmux options:
+The tools share no code and no database. They meet in environment variables,
+tmux options and, for mule, mu's plugin protocol (`mu-plugin-mule`):
 
 - mu sets `MU_AGENT_NAME` and `MU_WORKSTREAM` in every pane it spawns. murmur
   marks those agents as crew and shows them only when they need you.
