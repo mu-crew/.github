@@ -18,7 +18,7 @@ Keep every session they ever ran.
 | --- | --- |
 | [**mu**](https://github.com/mu-crew/mu) | Plans the work and hands it out: task DAG, per-agent workspaces, audit log |
 | [**murmur**](https://github.com/mu-crew/murmur) | Shows which agent, on which host, is waiting on you; `murmur jump` or tsesh takes you there |
-| [**mule**](https://github.com/mu-crew/mule) | Runs the long build on a remote host without holding your SSH session |
+| [**mule**](https://github.com/mu-crew/mule) | Runs remote builds, file edits and your agent's tools over one SSH connection it never holds |
 | [**muzzle**](https://github.com/mu-crew/muzzle) | Queues heavy commands from all your agents on each machine, and sizes them from what they really used |
 | [**museum**](https://github.com/mu-crew/museum) | Backs up your agents' sessions (pi, Claude Code, Codex, cursor-agent) from every machine to one store your agents can search |
 | [**tsesh**](https://github.com/mu-crew/tmux-session-picker) | One picker for tmux sessions and the agents in them, on every host |
@@ -59,8 +59,9 @@ Each tool works alone. Start with mu: it plans the work and hands it to agents
 of any of the five, locally and on remote hosts. It drives pi exactly through a
 control socket, and the other four by paste, confirmed by their own hook events
 through murmur. Add murmur for the cross-machine "who needs me" view, tmux
-badges and jump. Add mule when a remote host caps SSH sessions or a command
-must survive a dropped connection. Add muzzle when several agents' builds and
+badges and jump. Add mule when a remote host caps SSH sessions, a command
+must survive a dropped connection, or your agent should stay local while it
+works on a remote tree. Add muzzle when several agents' builds and
 tests share one machine. Add museum when your sessions are worth keeping. Add
 tsesh for one popup that switches sessions and, with murmur, jumps to agents.
 
