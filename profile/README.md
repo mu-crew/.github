@@ -5,121 +5,46 @@
 <h1 align="center">mu-crew</h1>
 
 <p align="center">
-Run a crew of coding agents in <a href="https://github.com/martintrojer/vtmux">tmux</a>, each placed where it fits: the loop where your credentials are, the work where the code is, one view of who needs you.<br>
-See which one needs you, on any machine.<br>
-Keep long jobs off your SSH session.<br>
-Keep the crew's builds from eating the machine.<br>
-Keep every session they ever ran.
+Run a crew of coding agents in <a href="https://github.com/martintrojer/vtmux">tmux</a>, each placed where it fits: the loop where your credentials are, the work where the code is, one view of who needs you.
 </p>
 
 ## The tools
 
+Each tool works alone; pick what you need.
+
 | Tool | What it does |
 | --- | --- |
-| [**mu**](https://github.com/mu-crew/mu) | Plans the work and hands it out: task DAG, per-agent workspaces, audit log |
+| [**mu**](https://github.com/mu-crew/mu) | Plans work across a crew: task DAG, per-agent workspaces, audit log |
 | [**murmur**](https://github.com/mu-crew/murmur) | Shows which agent, on which host, is waiting on you; `murmur jump` or tsesh takes you there |
-| [**mule**](https://github.com/mu-crew/mule) | Runs remote builds, file edits and your agent's tools over one SSH connection it never holds |
-| [**muzzle**](https://github.com/mu-crew/muzzle) | Queues heavy commands from all your agents on each machine, and sizes them from what they really used |
-| [**museum**](https://github.com/mu-crew/museum) | Backs up your agents' sessions (pi, Claude Code, Codex, cursor-agent) from every machine to one store your agents can search |
-| [**tsesh**](https://github.com/mu-crew/tmux-session-picker) | One picker for tmux sessions and the agents in them, on every host |
-| [**dotfiles**](https://github.com/mu-crew/dotfiles) | Wires them into tmux: agent state in tabs and borders, a status pill, keys |
+| [**mule**](https://github.com/mu-crew/mule) | Runs remote builds, file edits, and your agent's tools over one SSH connection it never holds |
+| [**muzzle**](https://github.com/mu-crew/muzzle) | Queues heavy commands from all your agents on each machine, sized from what they actually used |
+| [**museum**](https://github.com/mu-crew/museum) | Backs up your agents' sessions from every machine to one store your agents can search |
+| [**tsesh**](https://github.com/mu-crew/tmux-session-picker) | One popup picker for tmux sessions and the agents in them, on every host |
+| [**dotfiles**](https://github.com/mu-crew/dotfiles) | Wires them into tmux: agent state in tabs and borders, status pill, keys |
+
+## Where agents run
+
+Every agent has four places: its **loop** (harness, credentials, control socket), **workspace**, **shell**, and **DB** (`mu.db`, always local). Placement is per agent across rungs 0–5 — from a local worker, to a local pi editing a remote tree (`--mule`), to leased jobs and on-demand provider hosts.
+
+See **[LADDER.md](https://github.com/mu-crew/.github/blob/main/LADDER.md)** for the full rung table, harness/multiplexer matrix, and limits.
+
+## Quick install
 
 ```sh
-npm i -g \
-  @mu-crew/mu \
-  @mu-crew/murmur \
-  @mu-crew/mule \
-  @mu-crew/muzzle \
-  @mu-crew/museum
-murmur init                      # this node's identity, and murmur's hook entries
-mu init                          # mu's Stop hook entry and skill per harness
-muzzle init                      # muzzle's hook entries: queues heavy shell calls
-museum init devbox:/data/museum  # museum's store, hook entries, skill and sync timer
-mule init                        # registers mule's plugin with mu
-pi install npm:@mu-crew/mu       # pi: mu's extension, skill and recipe prompts
-pi install npm:@mu-crew/murmur   # pi: murmur's extension (state across machines, tmux badges)
-pi install npm:@mu-crew/muzzle   # pi: muzzle's extension and skill
-pi install npm:@mu-crew/museum   # pi: museum's extension and skill
+npm i -g @mu-crew/mu @mu-crew/murmur @mu-crew/mule @mu-crew/muzzle @mu-crew/museum
 ```
 
-tsesh is a tmux plugin. With [TPM](https://github.com/tmux-plugins/tpm), add to
-`~/.tmux.conf`:
+Full `init` commands, `pi install` extensions, TPM config for `tsesh`, and updates: **[INSTALL.md](https://github.com/mu-crew/.github/blob/main/INSTALL.md)**.
 
-```tmux
-set -g @plugin 'mu-crew/tmux-session-picker'
-```
+## Docs
 
-Each `init` writes entries for every harness set up on the machine (Claude Code,
-Codex, Cursor, Muse Code) and touches only its own. The `pi install` lines are
-for pi. `museum init` takes the store (`host:/path`, or a local `/path`).
-Update everything with `npm update -g`, rerun the `init`s, and
-`pi update --extensions`.
-
-Each tool works alone; pick by need. A remote host caps SSH sessions, or a job
-must survive a dropped connection: mule. Your agent should stay local while it
-edits a remote tree: pi with mule's pi extension (`pi --mule host:tree`). You
-run several agents and need to see who is waiting on you: add murmur, for the
-cross-machine view, tmux badges and jump. You plan work across a crew: add mu,
-the center of the crew. It hands work to agents of any of the five, drives pi
-exactly through a control socket and the other four by paste, confirmed by
-their own hook events through murmur. Its `spawn --mule` wraps the local-loop
-setup, and `--host`, leases and provider hosts cover the other rungs. The
-crew's builds share one machine: add muzzle. Sessions worth keeping: museum.
-One popup that switches sessions and, with murmur, jumps to agents: tsesh.
-[LADDER.md](https://github.com/mu-crew/.github/blob/main/LADDER.md) says where
-each part of an agent can run, and what each rung cannot do.
-
-## How they fit
-
-The tools share no code and no database. They meet in environment variables,
-tmux options and, for mule, mu's plugin protocol (`mu-plugin-mule`):
-
-- mu sets `MU_AGENT_NAME` and `MU_WORKSTREAM` in every pane it spawns. murmur
-  marks those agents as crew and shows them only when they need you.
-- mu's pi extension serves a per-agent control socket at a path mu derives
-  from workstream and agent (`MU_CTL_SOCK`); murmur's extension publishes
-  `@murmur_*` tmux options. Both load in the same pi and do not depend on each
-  other.
-- Claude Code, Codex, Cursor and Muse Code run `murmur hook <harness>` from
-  their own hooks. Each call drops one event file, and murmur's readers turn
-  the files into state. mu reads that state to confirm a send and to see a turn
-  end, with its final text.
-- mule runs each job as `mule-<id>`, so a remote job shows up in murmur too.
-- mule's pi extension (`pi install npm:@mu-crew/mule`) keeps pi's loop local
-  while its read, write, edit and bash tools work on a remote tree, over
-  mule's one connection. `mu agent spawn --mule` starts it for you.
-- Placement is per agent: the loop, the workspace and the shell each run
-  locally or on a host, and mu's DB stays local. mu records where they are;
-  every hop to a host goes through your link (a stored template or a
-  registered plugin such as mule's), never mu's own ssh.
-- museum copies each machine's pi, Claude Code, Codex and cursor-agent session
-  files into its own folder in one store, over plain rsync, started by a pi
-  extension, a tmux status line or a timer. Agents read the store with a skill,
-  and `museum status` shows which museum version each machine runs.
-- muzzle needs nothing from mu, but uses what mu sets. A build you start in
-  your own shell goes ahead of builds queued by mu's workers, and
-  `muzzle status` shows which agent holds each slot.
-- murmur publishes agent state as `@murmur_*` tmux options. The dotfiles read
-  them, and so can anything else.
-- tsesh reads `murmur status --json --cached` (its stable fields) and hands a
-  jump to `murmur jump <jump_target>`. Without murmur it falls back to the
-  `@murmur_*` tmux options.
-
-## What we believe
-
-- **Stay out of the model's way.** The tools coordinate; the model decides.
-- **No daemons, no complicated setup.** State is SQLite and files on each machine.
-- **Standalone tools that compose.** Each is useful alone.
-
-Built on tmux, with five first-class agent CLIs (pi has the exact channel)
-and narrower support for herdr, Rex and opencode. The full stance is in
-[STANCE.md](https://github.com/mu-crew/.github/blob/main/STANCE.md)
-and the design rules in [ZEN.md](https://github.com/mu-crew/.github/blob/main/ZEN.md).
+| Doc | Covers |
+| --- | --- |
+| [**LADDER.md**](https://github.com/mu-crew/.github/blob/main/LADDER.md) | The four places, rungs 0–5, capability matrix, and limits |
+| [**ARCHITECTURE.md**](https://github.com/mu-crew/.github/blob/main/ARCHITECTURE.md) | Adoption by need and how the tools compose without shared code or DB |
+| [**STANCE.md**](https://github.com/mu-crew/.github/blob/main/STANCE.md) | What we promise, harness/multiplexer limits, and what we do not build |
+| [**ZEN.md**](https://github.com/mu-crew/.github/blob/main/ZEN.md) | Design rules |
 
 ## Built by agents, for agents
 
-AI coding agents wrote most of this code, running on this stack, with a human
-reviewing what ships. The CLIs print next steps and use distinct exit codes so
-an agent can drive them too.
-
-Published as-is. Issues are welcome; open one before a pull request.
+AI coding agents wrote most of this code, running on this stack, with a human reviewing what ships. The CLIs print next steps and use distinct exit codes so an agent can drive them too. Published as-is; open an issue before a pull request.
