@@ -5,7 +5,7 @@
 <h1 align="center">mu-crew</h1>
 
 <p align="center">
-Run a crew of coding agents in <a href="https://github.com/martintrojer/vtmux">tmux</a>: Claude Code, Codex, Cursor, Muse Code and <a href="https://github.com/earendil-works/pi">pi</a>, mixed as you like.<br>
+Run a crew of coding agents in <a href="https://github.com/martintrojer/vtmux">tmux</a>, each placed where it fits: the loop where your credentials are, the work where the code is, one view of who needs you.<br>
 See which one needs you, on any machine.<br>
 Keep long jobs off your SSH session.<br>
 Keep the crew's builds from eating the machine.<br>
@@ -55,15 +55,19 @@ for pi. `museum init` takes the store (`host:/path`, or a local `/path`).
 Update everything with `npm update -g`, rerun the `init`s, and
 `pi update --extensions`.
 
-Each tool works alone. Start with mu: it plans the work and hands it to agents
-of any of the five, locally and on remote hosts. It drives pi exactly through a
-control socket, and the other four by paste, confirmed by their own hook events
-through murmur. Add murmur for the cross-machine "who needs me" view, tmux
-badges and jump. Add mule when a remote host caps SSH sessions, a command
-must survive a dropped connection, or your agent should stay local while it
-works on a remote tree. Add muzzle when several agents' builds and
-tests share one machine. Add museum when your sessions are worth keeping. Add
-tsesh for one popup that switches sessions and, with murmur, jumps to agents.
+Each tool works alone; pick by need. A remote host caps SSH sessions, or a job
+must survive a dropped connection: mule. Your agent should stay local while it
+edits a remote tree: pi with mule's pi extension (`pi --mule host:tree`). You
+run several agents and need to see who is waiting on you: add murmur, for the
+cross-machine view, tmux badges and jump. You plan work across a crew: add mu,
+the center of the crew. It hands work to agents of any of the five, drives pi
+exactly through a control socket and the other four by paste, confirmed by
+their own hook events through murmur. Its `spawn --mule` wraps the local-loop
+setup, and `--host`, leases and provider hosts cover the other rungs. The
+crew's builds share one machine: add muzzle. Sessions worth keeping: museum.
+One popup that switches sessions and, with murmur, jumps to agents: tsesh.
+[LADDER.md](https://github.com/mu-crew/.github/blob/main/LADDER.md) says where
+each part of an agent can run, and what each rung cannot do.
 
 ## How they fit
 
@@ -81,6 +85,13 @@ tmux options and, for mule, mu's plugin protocol (`mu-plugin-mule`):
   the files into state. mu reads that state to confirm a send and to see a turn
   end, with its final text.
 - mule runs each job as `mule-<id>`, so a remote job shows up in murmur too.
+- mule's pi extension (`pi install npm:@mu-crew/mule`) keeps pi's loop local
+  while its read, write, edit and bash tools work on a remote tree, over
+  mule's one connection. `mu agent spawn --mule` starts it for you.
+- Placement is per agent: the loop, the workspace and the shell each run
+  locally or on a host, and mu's DB stays local. mu records where they are;
+  every hop to a host goes through your link (a stored template or a
+  registered plugin such as mule's), never mu's own ssh.
 - museum copies each machine's pi, Claude Code, Codex and cursor-agent session
   files into its own folder in one store, over plain rsync, started by a pi
   extension, a tmux status line or a timer. Agents read the store with a skill,

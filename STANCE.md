@@ -2,12 +2,14 @@
 
 mu-crew is tools for running coding agents: mu, murmur, mule, muzzle and
 museum. This page says what they are built on, what they support beyond that,
-and what the org promises. [ZEN.md](ZEN.md) has the design rules.
+and what the org promises. [ZEN.md](ZEN.md) has the design rules, and
+[LADDER.md](LADDER.md) says where each part of an agent can run.
 
 ## Built on tmux, for five agent CLIs
 
 **tmux is the runtime.** Agents live in [tmux](https://github.com/tmux/tmux)
-panes, and a tmux server plus a pane id is an agent's address. mu spawns crews
+panes. A pane is where an agent is reached; mu's row (workstream and name) is
+who it is, and placement says where its loop, workspace and shell run. mu spawns crews
 into tmux sessions, murmur jumps to panes, and mule runs TUI jobs under a
 private tmux server. We build nothing tmux already does: panes, sessions,
 attach, detach.
@@ -43,7 +45,7 @@ today, and each has a limit we state instead of hiding.
 | Claude Code | mu interrupts with Escape | Claude reports no interrupt: it reads `idle?` until its next event. |
 | Remote Claude Code, Codex, Cursor, Muse Code | mu reads the host's hook events on demand, on tmux only | A send is confirmed on the next read, not as it lands. On Rex they are polled with no hook events. |
 | Remote lease (a job outliving its connection) | mu runs a pi worker through a carrier | pi only: a non-pi worker has no input path on a lease. One managed backend per workstream, and the guard is advisory: two first spawns can race. |
-| Local loop with a remote workspace | `mu agent spawn --mule` runs pi locally on a remote worktree (mu 5.4.0; needs mule 0.7.0 or later) | The local pane runs on tmux or Rex; herdr is refused. |
+| Local loop with a remote workspace | `mu agent spawn --mule` runs pi locally on a remote worktree (mu 5.4.0; needs mule 0.7.0 or later) | pi only (mule's pi extension); claude and codex on rung 2 are on mu ROADMAP 'Ladder reach'. The local pane runs on tmux or Rex; herdr is refused. |
 | ssh `pane` plugin kind | the example plugin runs a pane over plain ssh | An example, not the supported path: one connection per pane, and stop covers only the recorded process group. |
 | Checks on the four | Their own subagents, recorded with `mu task check` and `mu task verdict` | `mu_delegate` children need pi. |
 | Cursor | murmur, mu, muzzle, museum | No permission hook, so a waiting dialog reads as unknown. museum backs up its agent-transcripts JSONL, not the live SQLite chats under `~/.cursor/chats/`. |
@@ -64,6 +66,8 @@ A new entry needs a named limit before it goes in this table.
 - A terminal multiplexer or terminal runtime. tmux is ours; herdr and Rex are their own.
 - An agent, a model router or a fork of any agent CLI.
 - A hosted service or a daemon. State is SQLite and files on each machine.
+- A remote agent runtime. mule moves commands and files over one connection;
+  the agent loop runs wherever its harness runs it.
 - Agent-to-agent chat. mu coordinates through a task graph and a log.
 - A single merged binary. The tools stay separate and share only the `MU_*`
   environment contract and, for mule, mu's plugin protocol.
