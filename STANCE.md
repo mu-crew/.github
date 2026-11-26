@@ -7,12 +7,15 @@ and what the org promises. [ZEN.md](ZEN.md) has the design rules, and
 
 ## Built on tmux, for five agent CLIs
 
-**tmux is the runtime.** Agents live in [tmux](https://github.com/tmux/tmux)
+**tmux (specifically [vtmux](https://github.com/martintrojer/vtmux) >= 3.8-rc3) is the runtime.** Agents live in tmux
 panes. A pane is where an agent is reached; mu's row (workstream and name) is
-who it is, and placement says where its loop, workspace and shell run. mu spawns crews
-into tmux sessions, murmur jumps to panes, and mule runs TUI jobs under a
-private tmux server. We build nothing tmux already does: panes, sessions,
-attach, detach.
+who it is, and placement says where its loop, workspace and shell run. We recommend
+vtmux because it is drop-in tmux 3.8 plus open OSC 7501 (program status) and
+OSC 7577 (program resume) support — eliminating harness state hooks, murmur's
+pi extension, and focus-clear shell-outs. On vanilla tmux 3.8 (which drops both
+sequences), pi workers in mu, mule, muzzle, and museum still work; use `murmur`
+2.x (`release/2.x`) if you need local state on stock tmux. We build nothing tmux
+already does: panes, sessions, attach, detach.
 
 **Five agent CLIs are first-class.** Claude Code, Codex, Cursor's CLI
 (cursor-agent), Muse Code and [pi](https://github.com/earendil-works/pi). One
@@ -24,10 +27,11 @@ mu only starts it, and your shell rc names it through `$MU_<KEY>_COMMAND`.
 
 **pi has the exact channel.** mu's pi extension serves a control socket, so
 send, abort, wait and the final text are exact, and pi alone delegates through
-`mu_delegate`. murmur and museum report from inside pi as extensions
-(`pi install npm:@mu-crew/murmur`). We extend pi through extensions, skills and
-CLIs, and we never fork or vendor it. mu reaches the other four by paste and
-reads their hook events; what that still lacks is in the table below.
+`mu_delegate`. museum reports from inside pi as an extension; murmur 3.0 needs
+no pi extension because pi emits OSC 7501 natively. We extend pi through
+extensions, skills and CLIs, and we never fork or vendor it. mu reaches the
+other four by paste and reads their OSC 7501 status from vtmux/Rex (or murmur
+2.x hooks on vanilla tmux); what that still lacks is in the table below.
 
 One contract suite runs every mu verb against each channel, and evals run
 Claude Code, Codex and pi orchestrators.
@@ -40,7 +44,7 @@ today, and each has a limit we state instead of hiding.
 | Beyond, or short of, the five on tmux | Where | Limit |
 | --- | --- | --- |
 | herdr | mu spawns crews into herdr panes | murmur does not read herdr panes. herdr's own sidebar and `herdr machine` do that job. mu refuses herdr for every remote workspace and remote loop, session templates included (before any effect); `mu host exec` still runs. |
-| Rex | mu spawns crews into Rex sessions; non-pi agent state comes from the agent's own OSC 7501 report | Attach switches Rex.app and needs its Remote Control setting. murmur does not read Rex panes. A non-pi CLI that reports no OSC 7501 status reads `unknown`. Remote non-pi workers are polled, with no hook receipt or hook-based close; mu refuses a remote loop over a lease or a plugin job on Rex before any effect, so they are unsupported, not merely unsmoked; a Rex session template runs. |
+| Rex | mu spawns crews into Rex sessions and murmur 3.0 reads local Rex panes directly via OSC 7501 | Attach switches Rex.app and needs its Remote Control setting. Remote Rex panes are visible in murmur, not remotely jumpable. A non-pi CLI that reports no OSC 7501 status reads `unknown`. Remote non-pi workers are polled, with no hook receipt or hook-based close; mu refuses a remote loop over a lease or a plugin job on Rex before any effect, so they are unsupported, not merely unsmoked; a Rex session template runs. |
 | Claude Code, Codex, Cursor, Muse Code | mu pastes into their panes and reads their hook events | No mid-turn steering and no write fence: a send is confirmed by the turn count, never exactly, and never resent. A long tool call looks like a hung one. After you approve a permission in the pane, it reads `blocked` until the next event. |
 | Claude Code | mu interrupts with Escape | Claude reports no interrupt: it reads `idle?` until its next event. |
 | Remote Claude Code, Codex, Cursor, Muse Code | mu reads the host's hook events on demand, on tmux only | A send is confirmed on the next read, not as it lands. On Rex they are polled with no hook events. |

@@ -1,5 +1,20 @@
 # Install
 
+## Multiplexer (recommended: vtmux >= 3.8-rc3)
+
+We recommend installing [**vtmux**](https://github.com/martintrojer/vtmux) as your `tmux` binary and enabling its OSC 7501/7577 options in `~/.tmux.conf`:
+
+```tmux
+%if "#{vtmux_version}"
+set -s vtmux-program-status on
+set -s vtmux-program-resume on
+%endif
+```
+
+**Why vtmux:** pi, Claude Code, and Codex report their own state over OSC 7501 natively, and vtmux exposes it directly in `#{*_program_state}` formats with in-process focus clearing — so `murmur` 3.0, `mu`, `tsesh`, and `dotfiles` need zero harness state hooks, zero murmur pi extension, and zero focus-clear shell-outs. Staying on vanilla tmux 3.8? Install `@mu-crew/murmur@2` (branch `release/2.x`) instead of murmur 3.0.
+
+## CLI tools
+
 Install the CLI tools you want (each works alone):
 
 ```sh
@@ -14,7 +29,7 @@ npm i -g \
 Initialize each tool you installed:
 
 ```sh
-murmur init                      # this node's identity, and murmur's hook entries
+murmur init                      # this node's identity (no harness hooks needed on vtmux/Rex)
 mu init                          # mu's Stop hook entry and skill per harness
 muzzle init                      # muzzle's hook entries: queues heavy shell calls
 museum init devbox:/data/museum  # museum's store, hook entries, skill and sync timer
@@ -32,7 +47,6 @@ extensions:
 
 ```sh
 pi install npm:@mu-crew/mu       # mu's control socket, delegate tool, skill and recipes
-pi install npm:@mu-crew/murmur   # murmur's state across machines and tmux badges
 pi install npm:@mu-crew/mule     # remote workspace tools (`pi --mule host:tree`)
 pi install npm:@mu-crew/muzzle   # queues heavy shell calls and skill
 pi install npm:@mu-crew/museum   # session backup and search skill

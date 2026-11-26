@@ -5,7 +5,7 @@
 <h1 align="center">mu-crew</h1>
 
 <p align="center">
-Run a crew of coding agents in <a href="https://github.com/martintrojer/vtmux">tmux</a>, each placed where it fits: the loop where your credentials are, the work where the code is, one view of who needs you.
+Run a crew of coding agents in <a href="https://github.com/martintrojer/vtmux">vtmux</a> (drop-in tmux 3.8 with OSC 7501/7577), each placed where it fits: the loop where your credentials are, the work where the code is, one view of who needs you.
 </p>
 
 ## The tools
@@ -28,13 +28,17 @@ Every agent has four places: its **loop** (harness, credentials, control socket)
 
 See **[PLACEMENT.md](https://github.com/mu-crew/.github/blob/main/PLACEMENT.md)** for the axes, picking by need, the support matrix, and limits.
 
+## Recommended multiplexer: vtmux
+
+We recommend [**vtmux**](https://github.com/martintrojer/vtmux) (`>= 3.8-rc3`) as your `tmux` binary, with `set -s vtmux-program-status on` and `set -s vtmux-program-resume on`. vtmux implements the open **OSC 7501** (program status) and **OSC 7577** (program resume) protocols that pi, Claude Code, and Codex emit natively (and Rex also supports). Using it eliminates per-harness state hooks, inboxes, pi state extensions, and tmux focus-clear forks, and gives instant native window/pane/session glyphs. On vanilla tmux 3.8, `mu` pi workers, `mule`, `muzzle`, and `museum` still work; stay on `@mu-crew/murmur@2` (`release/2.x`) if you need local agent state on stock tmux.
+
 ## Quick install
 
 ```sh
 npm i -g @mu-crew/mu @mu-crew/murmur @mu-crew/mule @mu-crew/muzzle @mu-crew/museum
 ```
 
-Full `init` commands, `pi install` extensions, TPM config for `tsesh`, and updates: **[INSTALL.md](https://github.com/mu-crew/.github/blob/main/INSTALL.md)**.
+Full `init` commands, `pi install` extensions, `vtmux` options, TPM config for `tsesh`, and updates: **[INSTALL.md](https://github.com/mu-crew/.github/blob/main/INSTALL.md)**.
 
 ## Docs
 
