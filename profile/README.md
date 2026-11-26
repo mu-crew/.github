@@ -24,9 +24,9 @@ Each tool works alone; pick what you need.
 
 ## Where agents run
 
-Every agent has four places: its **loop** (harness, credentials, control socket), **workspace**, **shell**, and **DB** (`mu.db`, always local). Placement is per agent across rungs 0–5 — from a local worker, to a local pi editing a remote tree (`--mule`), to leased jobs and on-demand provider hosts.
+Every agent has four places: its **loop** (harness, credentials, control socket), **workspace**, **shell**, and **DB** (`mu.db`, always local). Each agent's placement is **local**, **remote workspace** (loop here, workspace and shell on a host: `--mule`), or **remote loop** (all on a host: `--host`, over a session, a lease, or a provisioned host).
 
-See **[LADDER.md](https://github.com/mu-crew/.github/blob/main/LADDER.md)** for the full rung table, harness/multiplexer matrix, and limits.
+See **[PLACEMENT.md](https://github.com/mu-crew/.github/blob/main/PLACEMENT.md)** for the axes, picking by need, the support matrix, and limits.
 
 ## Quick install
 
@@ -40,7 +40,7 @@ Full `init` commands, `pi install` extensions, TPM config for `tsesh`, and updat
 
 | Doc | Covers |
 | --- | --- |
-| [**LADDER.md**](https://github.com/mu-crew/.github/blob/main/LADDER.md) | The four places, rungs 0–5, capability matrix, and limits |
+| [**PLACEMENT.md**](https://github.com/mu-crew/.github/blob/main/PLACEMENT.md) | The four places, the three axes, support matrix, and limits |
 | [**ARCHITECTURE.md**](https://github.com/mu-crew/.github/blob/main/ARCHITECTURE.md) | Adoption by need and how the tools compose without shared code or DB |
 | [**STANCE.md**](https://github.com/mu-crew/.github/blob/main/STANCE.md) | What we promise, harness/multiplexer limits, and what we do not build |
 | [**ZEN.md**](https://github.com/mu-crew/.github/blob/main/ZEN.md) | Design rules |
