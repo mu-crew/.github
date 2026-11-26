@@ -24,7 +24,7 @@ Each tool works alone; pick what you need.
 
 ## Where agents run
 
-Every agent has four places: its **loop** (harness, credentials, control socket), **workspace**, **shell**, and **DB** (`mu.db`, always local). Each agent's placement is **local**, **remote workspace** (loop here, workspace and shell on a host: `--mule`), or **remote loop** (all on a host: `--host`, over a session, a lease, or a provisioned host).
+Every agent has four places: its **loop** (harness, credentials, control socket), **workspace**, **shell**, and **DB** (`mu.db`, always local). Each agent's placement is **local**, **remote workspace** (loop here, workspace and shell on a host: `--mule`), or **remote loop** (loop, workspace and shell on a host: `--host`, over a session, a lease or another plugin job). The DB and your pane stay here.
 
 See **[PLACEMENT.md](https://github.com/mu-crew/.github/blob/main/PLACEMENT.md)** for the axes, picking by need, the support matrix, and limits.
 

@@ -33,8 +33,12 @@ pane lives on one multiplexer.
 - **remote workspace**: loop here; workspace and shell there
   (`mu agent spawn --mule <host>`, or `pi --mule host:tree`).
 - **remote loop**: the loop there too, and so the workspace and shell
-  (`mu agent spawn --host <host>`): over a **session** template, a mule
-  **lease**, or a **plugin job** on a provider plugin's provisioned host.
+  (`mu agent spawn --host <host>`): over a **session** template, a **lease**
+  (a lease template or mule's plugin lease), or another **plugin job**.
+
+Transport and host are independent. mule's lease is a plugin job on your
+host, the ssh example plugin's job runs on a host you already have, and a
+provider plugin's job runs on a provisioned host.
 
 `--mule <host>` means remote workspace; `--host <host>` means remote loop,
 even through mule's lease.
@@ -48,8 +52,11 @@ A **remote command** is not a placement, since no agent runs: `mu host exec
 - The code, data or hardware is over there, and you want your session, UI and
   extensions here: **remote workspace**.
 - The agent must keep working when your laptop sleeps or the link drops, and
-  the host runs the harness: **remote loop**, over a lease if the link is
-  flaky or sessions are capped, a session otherwise.
+  the host runs the harness: **remote loop** over a lease, or a plugin job
+  whose job outlives the drop.
+- The host runs the harness and the link is stable, and losing the run on a
+  drop is acceptable: **remote loop** over a session. A session is attached
+  to its ssh tty.
 - No suitable machine: **remote loop** on a **provisioned host**.
 - Just a build or test there, no agent: **remote command**.
 
@@ -57,22 +64,26 @@ A **remote command** is not a placement, since no agent runs: `mu host exec
 
 Support depends on placement and transport.
 
-| Placement | Transport | Harnesses | Multiplexer (your pane) | One SSH session per connection |
-| --- | --- | --- | --- | --- |
-| local | none | all five | tmux, Rex, herdr | n/a |
-| remote workspace | mule | pi only (today) | tmux, Rex; herdr refused | fine: mule admits each op on its one master |
-| remote loop | session | pi, plus the other four via remote hook events on tmux | tmux; Rex for session templates; herdr refused | fine: each pane opens its own connection |
-| remote loop | lease | pi only: a lease carrier forwards no stdin | tmux | fine: one master |
-| remote loop | plugin job (provisioned host) | what the provider's plugin and host offer | tmux | the provider's |
-| remote command | the host's link | none: no agent | any (no pane) | fine over a link that serialises itself, as mule's does |
+| Placement | Transport | Harnesses | Multiplexer (your pane) |
+| --- | --- | --- | --- |
+| local | none | all five | tmux, Rex, herdr |
+| remote workspace | mule | pi only (today) | tmux, Rex; herdr refused |
+| remote loop | session | pi; the other four on tmux via remote hook events, on Rex polled (no hook receipt or hook-based close) | tmux, Rex; herdr refused |
+| remote loop | lease (a lease template or mule's plugin lease) | pi only: a lease carrier forwards no stdin | tmux |
+| remote loop | other plugin job (on your host or a provisioned one) | what the plugin and host offer | tmux; Rex and herdr refused |
+| remote command | the host's link | none: no agent | any (no pane) |
+
+On an sshd with `MaxSessions 1`, mu's SSH session starter opens its own
+connection per pane, so it needs no lease; a template that shares one master
+needs a free session on it. mule runs every op over the one master you opened.
 
 ## Which tool provides what
 
 | Tool | Provides |
 | --- | --- |
-| mu | every placement: spawns, tracks and recovers agents; `mu host exec` for a remote command; session templates, and plugins for leases and provisioned hosts |
-| mule | the remote workspace (its pi extension), the lease (its plugin's `lease` job kind), and a link that holds one SSH master per host |
-| murmur | who waits on you, in every placement (each has a pane) |
+| mu | every placement: spawns, tracks and recovers agents; `mu host exec` for a remote command; session templates, and plugins for plugin jobs and provisioned hosts |
+| mule | the remote workspace (its pi extension), the lease (its plugin's `lease` job kind), and a link over the one SSH master per host that you open |
+| murmur | who waits on you, for agents in tmux panes in any placement; it does not read Rex or herdr panes |
 | muzzle | queues several agents' heavy commands on one machine; runs on that machine |
 
 ## Limits

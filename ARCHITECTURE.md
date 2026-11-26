@@ -9,7 +9,7 @@ plugin protocol (`mu-plugin-mule`).
 - **Capped SSH or jobs that must survive drops:** [mule](https://github.com/mu-crew/mule).
 - **Local agent, remote codebase:** pi with mule's extension (`pi --mule host:tree`).
 - **Several agents, need to see who waits on you:** add [murmur](https://github.com/mu-crew/murmur) for the cross-machine view, tmux badges, and jump.
-- **Plan work across a crew:** add [mu](https://github.com/mu-crew/mu), the center of the crew. It hands work to agents of all five harnesses, drives pi through a control socket and the other four by paste confirmed through murmur hooks. `mu agent spawn --mule` sets up a remote workspace; `--host` runs a remote loop over a session, a lease or a provisioned host ([PLACEMENT.md](PLACEMENT.md)).
+- **Plan work across a crew:** add [mu](https://github.com/mu-crew/mu), the center of the crew. It hands work to agents of all five harnesses, drives pi through a control socket and the other four by paste confirmed through murmur hooks. `mu agent spawn --mule` sets up a remote workspace; `--host` runs a remote loop over a session, a lease or another plugin job ([PLACEMENT.md](PLACEMENT.md)).
 - **Builds competing on one machine:** add [muzzle](https://github.com/mu-crew/muzzle).
 - **Sessions worth keeping and searching:** add [museum](https://github.com/mu-crew/museum).
 - **One popup to switch sessions and jump to agents:** add [tsesh](https://github.com/mu-crew/tmux-session-picker).
