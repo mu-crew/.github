@@ -43,13 +43,12 @@ today, and each has a limit we state instead of hiding.
 
 | Beyond, or short of, the five on tmux | Where | Limit |
 | --- | --- | --- |
-| herdr | mu spawns crews into herdr panes | murmur does not read herdr panes. herdr's own sidebar and `herdr machine` do that job. mu refuses herdr for every remote workspace and remote loop, session templates included (before any effect); `mu host exec` still runs. |
-| Rex | mu spawns crews into Rex sessions and murmur 3.0 reads local Rex panes directly via OSC 7501 | Attach switches Rex.app and needs its Remote Control setting. Remote Rex panes are visible in murmur, not remotely jumpable. A non-pi CLI that reports no OSC 7501 status reads `unknown`. Remote non-pi workers are polled, with no hook receipt or hook-based close; mu refuses a remote loop over a lease or a plugin job on Rex before any effect, so they are unsupported, not merely unsmoked; a Rex session template runs. |
+| Rex | mu spawns crews into Rex sessions and murmur 3.0 reads local Rex panes directly via OSC 7501 | Attach switches Rex.app and needs its Remote Control setting. Remote Rex panes are listed and jumpable in murmur via `murmur peer add|set --rex-host <label>`. A non-pi CLI that reports no OSC 7501 status reads `unknown`. Remote non-pi workers are polled, with no hook receipt or hook-based close; mu refuses a remote loop over a lease or a plugin job on Rex before any effect, so they are unsupported, not merely unsmoked; a Rex session template runs. |
 | Claude Code, Codex, Cursor, Muse Code | mu pastes into their panes and reads their hook events | No mid-turn steering and no write fence: a send is confirmed by the turn count, never exactly, and never resent. A long tool call looks like a hung one. After you approve a permission in the pane, it reads `blocked` until the next event. |
 | Claude Code | mu interrupts with Escape | Claude reports no interrupt: it reads `idle?` until its next event. |
 | Remote Claude Code, Codex, Cursor, Muse Code | mu reads the host's hook events on demand, on tmux only | A send is confirmed on the next read, not as it lands. On Rex they are polled with no hook events. |
 | Remote loop over a lease (a job outliving its connection) | mu runs a pi worker through a carrier | pi only: a non-pi worker has no input path on a lease. One managed backend per workstream, and the guard is advisory: two first spawns can race. |
-| Remote workspace | `mu agent spawn --mule` runs pi locally on a remote worktree (mu 5.4.0; needs mule 0.7.0 or later) | pi only (mule's pi extension); claude and codex there are on mu's ROADMAP. The local pane runs on tmux or Rex; herdr is refused. |
+| Remote workspace | `mu agent spawn --mule` runs pi locally on a remote worktree (mu 5.4.0; needs mule 0.7.0 or later) | pi only (mule's pi extension); claude and codex there are on mu's ROADMAP. The local pane runs on tmux or Rex. |
 | ssh `pane` plugin kind | the example plugin runs a pane over plain ssh | An example, not the supported path: one connection per pane, and stop covers only the recorded process group. |
 | Checks on the four | Their own subagents, recorded with `mu task check` and `mu task verdict` | `mu_delegate` children need pi. |
 | Cursor | murmur, mu, muzzle, museum | No permission hook, so a waiting dialog reads as unknown. museum backs up its agent-transcripts JSONL, not the live SQLite chats under `~/.cursor/chats/`. |
@@ -67,7 +66,7 @@ A new entry needs a named limit before it goes in this table.
 
 ## What we do not build
 
-- A terminal multiplexer or terminal runtime. tmux is ours; herdr and Rex are their own.
+- A terminal multiplexer or terminal runtime. tmux and vtmux are ours; Rex is its own.
 - An agent, a model router or a fork of any agent CLI.
 - A hosted service or a daemon. State is SQLite and files on each machine.
 - A remote agent runtime. mule moves commands and files over one connection;

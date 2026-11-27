@@ -66,11 +66,11 @@ Support depends on placement and transport.
 
 | Placement | Transport | Harnesses | Multiplexer (your pane) |
 | --- | --- | --- | --- |
-| local | none | all five | tmux, Rex, herdr |
-| remote workspace | mule | pi only (today) | tmux, Rex; herdr refused |
-| remote loop | session | pi; the other four on tmux via remote hook events, on Rex polled (no hook receipt or hook-based close) | tmux, Rex; herdr refused |
+| local | none | all five | tmux, Rex |
+| remote workspace | mule | pi only (today) | tmux, Rex |
+| remote loop | session | pi; the other four on tmux via remote hook events, on Rex polled (no hook receipt or hook-based close) | tmux, Rex |
 | remote loop | lease (a lease template or mule's plugin lease) | pi only: a lease carrier forwards no stdin | tmux |
-| remote loop | other plugin job (on your host or a provisioned one) | what the plugin and host offer | tmux; Rex and herdr refused |
+| remote loop | other plugin job (on your host or a provisioned one) | what the plugin and host offer | tmux; Rex refused |
 | remote command | the host's link | none: no agent | any (no pane) |
 
 On an sshd with `MaxSessions 1`, mu's SSH session starter opens its own
@@ -83,7 +83,7 @@ needs a free session on it. mule runs every op over the one master you opened.
 | --- | --- |
 | mu | every placement: spawns, tracks and recovers agents; `mu host exec` for a remote command; session templates, and plugins for plugin jobs and provisioned hosts |
 | mule | the remote workspace (its pi extension), the lease (its plugin's `lease` job kind), and a link over the one SSH master per host that you open |
-| murmur | who waits on you, for agents in tmux panes in any placement; it does not read Rex or herdr panes |
+| murmur | who waits on you, for agents in tmux panes in any placement; it reads tmux/vtmux and Rex panes, local and remote |
 | muzzle | queues several agents' heavy commands on one machine; runs on that machine |
 
 ## Limits
